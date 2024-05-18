@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import YAML from "yaml";
 
-const { data: groups } = await useAsyncData("groups", async () => {
+const { data: config } = await useAsyncData("config", async () => {
   const response: any = await $fetch(
-    "https://jsonplaceholder.typicode.com/posts"
+    "https://raw.githubusercontent.com/jln-brtn/statusbase-reborn/master/ci/config.yml"
   );
   return YAML.parse(response);
 });
@@ -23,7 +23,7 @@ useCustomHead("StatusBase Status Page");
       </h3>
     </div>
 
-    <Collapse v-for="group in groups"></Collapse>
+    <Collapse v-for="group in config.groups" :slug="group.name" :sites="group.sites"/>
 
     <!-- <IncidentReport :incidents="incidents"></IncidentReport> -->
   </div>

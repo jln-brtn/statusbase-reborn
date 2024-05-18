@@ -4,7 +4,7 @@ import type { Dayjs } from "dayjs";
 import dayjs from "dayjs/esm";
 
 const props = defineProps({
-  data: Object,
+  slug: String,
 })
 const gridCount = useGridCount()
 const getDateArray = function (start: Date, days: number) {

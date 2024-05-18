@@ -10,11 +10,11 @@ groups:
   - name: "fr-zone"
     sites:
       - name: Crackito
-        url: https://fr.crackito.io/
+        desc: https://fr.crackito.io/
         slug: fr-crackito
       - name: Git
-        url: https://fr.crackito.io/git
+        desc: https://fr.crackito.io/git
         slug: fr-git
       - name: Woodpecker
-        url: https://fr.crackito.io/ci
+        desc: https://fr.crackito.io/ci
         slug: fr-woodpecker

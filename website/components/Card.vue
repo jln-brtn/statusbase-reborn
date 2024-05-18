@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { formatUptime } from "~~/utils/function"
+import { formatUptime } from "~~/utils/function";
 
 const props = defineProps({
-  meta_data: Object,
-  report_data: Object,
-})
-const status = ref()
+  site: Object
+});
+const status = ref();
 </script>
 
 <template>
@@ -14,9 +13,9 @@ const status = ref()
       <div class="mx-0.5 truncate">
         <div class="flex items-center">
           <StatusIcon :uptime="status?.overallUptime"></StatusIcon>
-          <NuxtLink :to="props.meta_data?._path ?? '#'" class="ml-2 md:text-xl">{{ props.meta_data?.title }}</NuxtLink>
+          <span class="ml-2 md:text-xl">{{ props.site?.slug }}</span>
         </div>
-        <h4 class="text-sm text-gray-400">{{ props.meta_data?.url }}</h4>
+        <h4 v-if="props.site?.desc" class="text-sm text-gray-400">{{ props.site?.desc }}</h4>
       </div>
       <div>
         <p v-if="status?.overallUptime" class="ml-3 md:text-xl text-gray-400">
@@ -25,6 +24,6 @@ const status = ref()
         <div v-else class="bg-gray-100 rounded-lg w-24 h-7 animate-pulse"></div>
       </div>
     </div>
-    <StatusGrid ref="status" :data="report_data?.body" />
+    <StatusGrid ref="status" />
   </div>
 </template>
