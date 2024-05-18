@@ -1,0 +1,20 @@
+owner: crackito-io # Your GitHub organization or username, where this repository lives
+repo: status # The name of this repository
+
+status-website:
+  cname: status.crackito.io
+  logoUrl: https://raw.githubusercontent.com/upptime/upptime.js.org/master/static/img/icon.svg
+  name: Crackito
+
+groups:
+  - name: "fr-zone"
+    sites:
+      - name: Crackito
+        url: https://fr.crackito.io/
+        slug: fr-crackito
+      - name: Git
+        url: https://fr.crackito.io/git
+        slug: fr-git
+      - name: Woodpecker
+        url: https://fr.crackito.io/ci
+        slug: fr-woodpecker
