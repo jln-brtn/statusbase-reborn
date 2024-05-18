@@ -2,7 +2,9 @@
 import { formatUptime } from "~~/utils/function";
 
 const props = defineProps({
-  site: Object
+  name: String,
+  desc: String,
+  slug: String,
 });
 const status = ref();
 </script>
@@ -13,9 +15,9 @@ const status = ref();
       <div class="mx-0.5 truncate">
         <div class="flex items-center">
           <StatusIcon :uptime="status?.overallUptime"></StatusIcon>
-          <span class="ml-2 md:text-xl">{{ props.site?.slug }}</span>
+          <span class="ml-2 md:text-xl">{{ name }}</span>
         </div>
-        <h4 v-if="props.site?.desc" class="text-sm text-gray-400">{{ props.site?.desc }}</h4>
+        <h4 v-if="desc" class="text-sm text-gray-400">{{ desc }}</h4>
       </div>
       <div>
         <p v-if="status?.overallUptime" class="ml-3 md:text-xl text-gray-400">
@@ -24,6 +26,6 @@ const status = ref();
         <div v-else class="bg-gray-100 rounded-lg w-24 h-7 animate-pulse"></div>
       </div>
     </div>
-    <StatusGrid ref="status" />
+    <StatusGrid ref="status" :slug="slug"/>
   </div>
 </template>

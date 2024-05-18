@@ -9,7 +9,7 @@ const props = defineProps({
   count: Number,
 })
 
-const uptimeClass = computed(() => statusColor(props.uptime))
+const uptimeClass = computed((uptime) => statusColor(uptime))
 </script>
 
 <template>

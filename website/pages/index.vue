@@ -23,7 +23,7 @@ useCustomHead("StatusBase Status Page");
       </h3>
     </div>
 
-    <Collapse v-for="group in config.groups" :slug="group.name" :sites="group.sites"/>
+    <Collapse v-for="group in config.groups" :name="group.name" :sites="group.sites"/>
 
     <!-- <IncidentReport :incidents="incidents"></IncidentReport> -->
   </div>

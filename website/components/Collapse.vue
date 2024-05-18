@@ -4,7 +4,7 @@ import CarbonChevronUp from "~icons/carbon/chevron-up";
 import CarbonChevronDown from "~icons/carbon/chevron-down";
 
 const props = defineProps({
-  slug: String,
+  name: String,
   sites: Array<any>,
 });
 const status = ref();
@@ -12,7 +12,7 @@ const status = ref();
 
 <template>
   <div class="my-8 md:my-10 w-full">
-    <Card :slug="slug"/>
+    <Card :name="name"/>
 
     <div class="flex items-center justify-center pt-2">
       <button class="btn">
@@ -21,7 +21,7 @@ const status = ref();
     </div>
 
     <div v-if="true" class="flex flex-col items-center m-4 border rounded-xl p-4">
-      <Card v-for="site in sites" :site="site"/>
+      <Card v-for="site in sites" :name="site.name" :desc="site.desc" :slug="site.slug"/>
     </div>
   </div>
 </template>
