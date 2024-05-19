@@ -40,22 +40,28 @@ const { data: computedData } = await useAsyncData("computedData", async () => {
         date.isSame(dayjs.utc(j.time), "day")
       );
 
-      if (dates.length > 0 && parseInt(index) + 1 === dates.length) {
-        dataGroupByDates.push({
-          time: dayjs().format("YYYY-MM-DD HH:mm").toString(),
-          status: "success",
-        });
+      if (dataGroupByDates.length > 0) {
+        if (parseInt(index) + 1 === dates.length) {
+          dataGroupByDates.push({
+            time: dayjs().format("YYYY-MM-DD HH:mm").toString(),
+            status: "success",
+          });
+        }
+
+        for (let index = 1; index < dataGroupByDates.length; index++) {
+          const currentMeasure = dataGroupByDates[index];
+          const previousMeasure = dataGroupByDates[index - 1];
+          if (previousMeasure.status === "error") {
+            const currentDate = dayjs(currentMeasure.time);
+            const previousDate = dayjs(previousMeasure.time);
+            dateResult.uptime -=
+              currentDate.diff(previousDate, "minute") / 1440;
+          }
+        }
+      } else {
+        dateResult.uptime = -1
       }
 
-      for (let index = 1; index < dataGroupByDates.length; index++) {
-        const currentMeasure = dataGroupByDates[index];
-        const previousMeasure = dataGroupByDates[index - 1];
-        if (previousMeasure.status === "error") {
-          const currentDate = dayjs(currentMeasure.time);
-          const previousDate = dayjs(previousMeasure.time);
-          dateResult.uptime -= currentDate.diff(previousDate, "minute") / 1440;
-        }
-      }
       globalResult.push(dateResult);
     }
     return globalResult;
