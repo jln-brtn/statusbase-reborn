@@ -1,48 +1,67 @@
 <script setup lang="ts">
-import type { Report } from "~~/utils/interface";
-import type { Dayjs } from "dayjs";
 import dayjs from "dayjs/esm";
+import Papa from "papaparse";
 
-const gridCount = useGridCount()
+const gridCount = useGridCount();
 const props = defineProps({
   slug: String,
-})
+});
 
 const getDateArray = function (start: Date, days: number) {
-  var arr: Dayjs[] = []
+  var arr: string[] = []; // Change the type to string
   for (let i = days - 1; i >= 0; i--) {
-    let dt = dayjs.utc(start).subtract(i, "day")
-    arr.push(dt)
+    let dt = dayjs.utc(start).subtract(i, "day");
+    arr.push(dt.format("YYYY-MM-DD")); // Convert Dayjs object to string
   }
-  return arr
-}
+  return arr;
+};
 
 const { data: computedData } = await useAsyncData("computedData", async () => {
-  const response: any = await $fetch(
-    `https://raw.githubusercontent.com/jln-brtn/statusbase-reborn/master/ci/logs/${props.slug}.csv`
-  );
+  try {
+    const response: any = await $fetch(
+      `https://raw.githubusercontent.com/jln-brtn/statusbase-reborn/master/ci/logs/${props.slug}.csv`
+    );
 
-  let dates = getDateArray(new Date(), gridCount.value)
+    const records = Papa.parse(response, {
+      header: true,
+      skipEmptyLines: true,
+    });
 
-  console.log(props.slug);
-  
+    let dates: string[] = getDateArray(new Date(), gridCount.value); // Dates array is now an array of strings
 
-  const datesPostProcess = dates.map((i) => {
-    let dataGroupByDates: number[] = response
-      ?.filter((j: { time: string | number | dayjs.Dayjs | Date | null | undefined; }) => i.isSame(dayjs.utc(j.time), "day"))
-      .map((i: { status: string; }) => (i.status === "success" ? 1 : 0))
+    let globalResult = [];
+    for (const index in dates) {
+      const date = dayjs(dates[index]); // Convert string back to Dayjs object
+      let dateResult = {
+        date: dates[index], // Store date as string
+        uptime: 1,
+      };
+      let dataGroupByDates: any = records.data.filter((j: any) =>
+        date.isSame(dayjs.utc(j.time), "day")
+      );
 
-    let uptime = dataGroupByDates?.length ? dataGroupByDates.reduce((a, v) => a + v, 0) / dataGroupByDates.length : -1
+      if (dates.length > 0 && parseInt(index) + 1 === dates.length) {
+        dataGroupByDates.push({
+          time: dayjs().format("YYYY-MM-DD HH:mm").toString(),
+          status: "success",
+        });
+      }
 
-    return {
-      date: i,
-      uptime,
-      count: dataGroupByDates?.length,
+      for (let index = 1; index < dataGroupByDates.length; index++) {
+        const currentMeasure = dataGroupByDates[index];
+        const previousMeasure = dataGroupByDates[index - 1];
+        if (previousMeasure.status === "error") {
+          const currentDate = dayjs(currentMeasure.time);
+          const previousDate = dayjs(previousMeasure.time);
+          dateResult.uptime -= currentDate.diff(previousDate, "minute") / 1440;
+        }
+      }
+      globalResult.push(dateResult);
     }
-  })
-  console.log(datesPostProcess);
-
-  return datesPostProcess;
+    return globalResult;
+  } catch (error) {
+    console.error(error);
+  }
 });
 
 const overallUptime = computed(() => {
@@ -50,9 +69,10 @@ const overallUptime = computed(() => {
   return (
     dateWithUptimeData.reduce((a, v) => a + v.uptime * v.count, 0) / dateWithUptimeData.reduce((a, v) => a + v.count, 0)
   )*/
-})
+  return 0.5;
+});
 
-defineExpose({ overallUptime })
+defineExpose({ overallUptime });
 </script>
 
 <template>

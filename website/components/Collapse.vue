@@ -12,7 +12,7 @@ const status = ref();
 
 <template>
   <div class="my-8 md:my-10 w-full">
-    <Card :name="name"/>
+    <Card :name="name" :slug="name"/>
 
     <div class="flex items-center justify-center pt-2">
       <button class="btn">
