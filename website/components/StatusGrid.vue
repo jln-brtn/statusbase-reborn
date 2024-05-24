@@ -51,6 +51,7 @@ const { data: computedData } = await useAsyncData("computedData", async () => {
         for (let index = 1; index < dataGroupByDates.length; index++) {
           const currentMeasure = dataGroupByDates[index];
           const previousMeasure = dataGroupByDates[index - 1];
+          debugger
           if (previousMeasure.status === "error") {
             const currentDate = dayjs(currentMeasure.time);
             const previousDate = dayjs(previousMeasure.time);
