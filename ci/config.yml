@@ -7,7 +7,7 @@ status-website:
   name: Crackito
 
 groups:
-  - name: "fr-zone"
+  - name: "French Zone"
     slug: "fr-zone"
     sites:
       - name: Crackito
