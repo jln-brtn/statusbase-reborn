@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import YAML from "yaml";
+import ActiveIncidents from "~/components/ActiveIncidents.vue";
 
-const { data: config } = await useAsyncData("config", async () => {
+const {data: config} = await useAsyncData("config", async () => {
   const response: any = await $fetch(
-    "https://raw.githubusercontent.com/jln-brtn/statusbase-reborn/master/ci/config.yml"
+      "https://raw.githubusercontent.com/jln-brtn/statusbase-reborn/master/ci/config.yml"
   );
   return YAML.parse(response);
 });
@@ -15,6 +16,8 @@ useCustomHead("StatusBase Status Page");
 <template>
   <div class="">
     <OverallStatus></OverallStatus>
+
+    <ActiveIncidents/>
 
     <div class="mt-12 md:mt-20 font-semibold inline-flex items-end">
       <h2 class="text-xl md:text-3xl">Uptime</h2>

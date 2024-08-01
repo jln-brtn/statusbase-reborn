@@ -14,7 +14,7 @@ export const isSameDate = (a: string | Date, b: string | Date) => {
 
 export const statusColor = (uptime: number, type = "bg") => {
   if (uptime >= 0.9) {
-    return `${type}-purple-500`
+    return `${type}-green-500`
   } else if (uptime >= 0.5) {
     return `${type}-yellow-400`
   } else if (uptime >= 0) {

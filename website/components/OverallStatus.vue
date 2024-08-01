@@ -1,18 +1,18 @@
 <script setup lang="ts">
 import { statusColor } from "~~/utils/function"
 import type { Report } from "~~/utils/interface";
+import { DateTime } from "luxon";
 
 const props = defineProps({
   report_data: Object,
 })
-const { $dayjs } = useNuxtApp()
 
 const todayUptimeList = computed(() => {
   let report_data = Array.isArray(props.report_data) ? props.report_data : [props.report_data]
   return report_data.map((i) => {
     if (!i) return
     let todayData: number[] = i.body
-      .filter((j: Report) => $dayjs.utc(j.time).isToday())
+      .filter((j: Report) => DateTime.fromISO(j.time).hasSame(DateTime.now(), 'day'))
       .map((j: Report) => (j.status === "success" ? 1 : 0))
 
     return todayData.reduce((a, v) => a + v, 0) / todayData.length
@@ -45,7 +45,7 @@ const todayOverallMessage = computed(() => {
 <template>
   <div class="flex justify-center">
     <div
-      class="w-full bg-white p-6 md:p-8 flex items-center rounded-xl shadow-lg shadow-purple-100 text-xl md:text-3xl font-medium"
+      class="w-full bg-white p-6 md:p-8 flex items-center rounded-xl shadow-lg shadow-green-100 text-xl md:text-3xl font-medium"
       :class="statusColor(todayOverallUptime, 'text')"
     >
       <StatusIcon :uptime="todayOverallUptime" class="md:text-3xl" />

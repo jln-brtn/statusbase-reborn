@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { formatUptime, statusColor, statusString } from "~~/utils/function"
 import { Tippy } from "vue-tippy";
-import type { Dayjs } from "dayjs";
-import type dayjs from "dayjs";
+import { DateTime } from "luxon";
 
 const props = defineProps({
   date: String,
@@ -25,7 +24,7 @@ const uptimeClass = computed(() => statusColor(props.uptime))
       <template #content>
         <div class="px-4 py-2 flex flex-col items-center">
           <p>
-            {{ $dayjs(props.date).format("DD MMM YYYY") }}
+            {{ DateTime.fromISO(props.date).toFormat("dd MMM yyyy") }}
           </p>
           <p class="text-white text-center mt-2 px-4 py-2 rounded-lg" :class="uptimeClass">
             {{ statusString(uptime, "message") }}

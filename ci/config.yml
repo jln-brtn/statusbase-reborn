@@ -8,6 +8,7 @@ status-website:
 
 groups:
   - name: "fr-zone"
+    slug: "fr-zone"
     sites:
       - name: Crackito
         desc: https://fr.crackito.io/

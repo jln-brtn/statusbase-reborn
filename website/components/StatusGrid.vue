@@ -1,25 +1,30 @@
 <script setup lang="ts">
-import dayjs from "dayjs/esm";
+import { DateTime, Settings } from "luxon";
+Settings.defaultZone = "utc";
+
 import Papa from "papaparse";
+import { ref, watch, computed } from "vue";
 
 const gridCount = useGridCount();
 const props = defineProps({
   slug: String,
 });
 
-const getDateArray = function (start: Date, days: number) {
-  var arr: string[] = []; // Change the type to string
+const getDateArray = function (start: string, days: number) {
+  const arr: string[] = []; // Change the type to string
   for (let i = days - 1; i >= 0; i--) {
-    let dt = dayjs.utc(start).subtract(i, "day");
-    arr.push(dt.format("YYYY-MM-DD")); // Convert Dayjs object to string
+    let dt = DateTime.fromISO(start).minus({ days: i });
+    arr.push(<string>dt.toISO()); // Convert Dayjs object to string
   }
   return arr;
 };
 
-const { data: computedData } = await useAsyncData("computedData", async () => {
+const computedData = ref([]);
+
+const fetchComputedData = async () => {
   try {
     const response: any = await $fetch(
-      `https://raw.githubusercontent.com/jln-brtn/statusbase-reborn/master/ci/logs/${props.slug}.csv`
+        `https://raw.githubusercontent.com/jln-brtn/statusbase-reborn/master/ci/logs/${props.slug}.csv`
     );
 
     const records = Papa.parse(response, {
@@ -27,63 +32,68 @@ const { data: computedData } = await useAsyncData("computedData", async () => {
       skipEmptyLines: true,
     });
 
-    let dates: string[] = getDateArray(new Date(), gridCount.value); // Dates array is now an array of strings
+    let dates: string[] = getDateArray(DateTime.now().toISO(), 45); // Dates array is now an array of strings
 
     let globalResult = [];
+
     for (const index in dates) {
-      const date = dayjs(dates[index]); // Convert string back to Dayjs object
+      const date = DateTime.fromISO(dates[index]);
+
       let dateResult = {
         date: dates[index], // Store date as string
         uptime: 1,
       };
+
       let dataGroupByDates: any = records.data.filter((j: any) =>
-        date.isSame(dayjs.utc(j.time), "day")
+          date.hasSame(DateTime.fromISO(j.time), "day")
       );
 
       if (dataGroupByDates.length > 0) {
         if (parseInt(index) + 1 === dates.length) {
           dataGroupByDates.push({
-            time: dayjs().format("YYYY-MM-DD HH:mm").toString(),
+            time: DateTime.now().toISO(),
             status: "success",
           });
         }
 
-        for (let index = 1; index < dataGroupByDates.length; index++) {
-          const currentMeasure = dataGroupByDates[index];
-          const previousMeasure = dataGroupByDates[index - 1];
-          debugger
+        for (let index2 = 1; index2 < dataGroupByDates.length; index2++) {
+          const currentMeasure = dataGroupByDates[index2];
+          const previousMeasure = dataGroupByDates[index2 - 1];
           if (previousMeasure.status === "error") {
-            const currentDate = dayjs(currentMeasure.time);
-            const previousDate = dayjs(previousMeasure.time);
+            const currentDate = DateTime.fromISO(currentMeasure.time);
+            const previousDate = DateTime.fromISO(previousMeasure.time);
+
             dateResult.uptime -=
-              currentDate.diff(previousDate, "minute") / 1440;
+                currentDate.diff(previousDate, "minutes").toObject().minutes / 1440;
           }
         }
       } else {
-        dateResult.uptime = -1
+        dateResult.uptime = -1;
       }
 
       globalResult.push(dateResult);
     }
-    return globalResult;
+
+    computedData.value = globalResult;
   } catch (error) {
     console.error(error);
   }
-});
+};
+
+watch(() => props.slug, fetchComputedData, { immediate: true });
 
 const overallUptime = computed(() => {
-  /*let dateWithUptimeData = computedData.filter((i) => i.uptime >= 0)
+  let dateWithUptimeData = computedData.value.filter((i) => i.uptime >= 0)
   return (
-    dateWithUptimeData.reduce((a, v) => a + v.uptime * v.count, 0) / dateWithUptimeData.reduce((a, v) => a + v.count, 0)
-  )*/
-  return 0.5;
+      dateWithUptimeData.reduce((a, v) => a + v.uptime, 0) / dateWithUptimeData.reduce((a, v) => a + 1, 0)
+  )
 });
 
 defineExpose({ overallUptime });
 </script>
 
 <template>
-  <div v-if="computedData" class="flex justify-between">
+  <div v-if="computedData.length" class="flex justify-between">
     <template v-for="data in computedData" :key="data.date">
       <Status v-bind="data"></Status>
     </template>
