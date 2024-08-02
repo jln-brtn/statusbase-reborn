@@ -10,7 +10,24 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
       - name: Run check script
         run: ./build/check
         working-directory: ci
 
+      - name: Configure Git
+        run: |
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@github.com'
+
+      - name: Add executables to Git
+        run: git add ./ci/logs/*
+
+      - name: Commit executables
+        run: git commit -m "Add build executables"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.TOKEN }}
+          branch: ${{ github.ref }}
