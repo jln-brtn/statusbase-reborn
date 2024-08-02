@@ -24,7 +24,9 @@ jobs:
         run: git add ./ci/logs/*
 
       - name: Commit executables
-        run: git commit -m "Update health check logs"
+        id: commit
+        run: |
+          git diff-index --quiet HEAD || git commit -m "Update health check logs"
 
       - name: Push changes
         uses: ad-m/github-push-action@master
