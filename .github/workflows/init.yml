@@ -23,6 +23,10 @@ jobs:
         run: go mod download
         working-directory: ci
 
+      - name: Clean build directory
+        run: rm -rf ./build/*
+        working-directory: ci
+
       - name: Build
         run: go build -v -o ./build/check ./script/check.go
         working-directory: ci
