@@ -26,3 +26,19 @@ jobs:
       - name: Build
         run: go build -v -o ./build/check ./script/check.go
         working-directory: ci
+
+      - name: Configure Git
+        run: |
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@github.com'
+
+      - name: Add executables to Git
+        run: git add ./ci/build/*
+
+      - name: Commit executables
+        run: git commit -m "Add build executables"
+
+      - name: Push changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+        run: git push
