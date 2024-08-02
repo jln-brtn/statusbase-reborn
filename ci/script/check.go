@@ -110,7 +110,7 @@ func writeStatus(path string, now time.Time, status string) {
 	entries := readLogEntries(path)
 	entries = removeOldDates(entries)
 
-	if (now.Hour() == 0 && now.Minute() < 10) || (now.Hour() == 23 && now.Minute() >= 50) { //if this is the first or last run of the day
+	if (now.Hour() == 0 && now.Minute() < 5) || (now.Hour() == 23 && now.Minute() >= 55) { //if this is the first or last run of the day
 		entries = append(entries, StatusEntry{now, status})
 	} else if len(entries) == 0 { //if there is no record before
 		entries = append(entries, StatusEntry{now, status})
