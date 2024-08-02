@@ -23,7 +23,7 @@ jobs:
       - name: Add executables to Git
         run: git add ./ci/logs/*
 
-      - name: Commit executables
+      - name: Commit logs
         id: commit
         run: |
           git diff-index --quiet HEAD || git commit -m "Update health check logs"
