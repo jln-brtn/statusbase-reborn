@@ -18,9 +18,6 @@ jobs:
         with:
           go-version: '1.22.5'
 
-      - name: Change directory to ci
-        run: cd ci
-
       - name: Install dependencies
         run: go mod download
         working-directory: ci
