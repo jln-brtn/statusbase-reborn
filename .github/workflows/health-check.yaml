@@ -8,4 +8,9 @@ jobs:
     runs-on: ubuntu-latest
     name: Check all sites
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Run check script
+        run: ./build/check
+        working-directory: ci
+
