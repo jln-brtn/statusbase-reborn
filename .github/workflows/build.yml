@@ -1,9 +1,9 @@
-name: [DEMO] Build
+name: Build
 
 on:
   push:
     branches:
-      - demo
+      - master
 
 jobs:
   build-executable:
