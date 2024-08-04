@@ -6,7 +6,7 @@ on:
       - demo
 
 jobs:
-  build-executable:
+  build:
     if: contains(github.event.head_commit.message, '!build')
     runs-on: ubuntu-latest
 
@@ -49,15 +49,6 @@ jobs:
         with:
           github_token: ${{ secrets.TOKEN }}
           branch: ${{ github.ref }}
-
-  build-website:
-    if: contains(github.event.head_commit.message, '!build')
-    runs-on: ubuntu-latest
-    needs: build-executable
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
 
       - name: Run check script
         run: ./build/main
