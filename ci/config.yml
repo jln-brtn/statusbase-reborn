@@ -5,6 +5,7 @@ status-website:
   cname: status.crackito.io
   logoUrl: https://raw.githubusercontent.com/upptime/upptime.js.org/master/static/img/icon.svg
   name: Crackito
+  description: Monitoring dashboard for the Crackito website
 
 groups:
   - name: "French Zone"

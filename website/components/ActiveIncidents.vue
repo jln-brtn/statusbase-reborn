@@ -1,24 +1,22 @@
 <script setup lang="ts">
-import {ref, watch} from "vue";
-import {DateTime} from "luxon";
+import {ref} from "vue";
 
+const runtimeConfig = useRuntimeConfig();
 const incidents = ref([]);
 
 const fetchComputedData = async () => {
   try {
-    const response: any = await $fetch(
-        `https://api.github.com/repos/jln-brtn/statusbase-reborn/issues`
+    incidents.value = await $fetch(
+        `https://api.github.com/repos/${runtimeConfig.public.OWNER}/${runtimeConfig.public.REPO}/issues`
     );
-
-    console.log(response)
-
-    incidents.value = [response];
   } catch (error) {
     console.error(error);
   }
 };
 
-watch(() => fetchComputedData, { immediate: true });
+watchEffect(() => {
+  fetchComputedData();
+});
 
 </script>
 

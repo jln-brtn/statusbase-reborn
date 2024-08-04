@@ -1,16 +1,17 @@
 <script setup lang="ts">
 import YAML from "yaml";
 import ActiveIncidents from "~/components/ActiveIncidents.vue";
+const runtimeConfig = useRuntimeConfig()
 
 const {data: config} = await useAsyncData("config", async () => {
   const response: any = await $fetch(
-      "https://raw.githubusercontent.com/jln-brtn/statusbase-reborn/master/ci/config.yml"
+      `https://raw.githubusercontent.com/${runtimeConfig.public.OWNER}/${runtimeConfig.public.REPO}/master/ci/config.yml`
   );
   return YAML.parse(response);
 });
 
 const gridCount = useGridCount();
-useCustomHead("StatusBase Status Page");
+useCustomHead();
 </script>
 
 <template>
@@ -26,6 +27,6 @@ useCustomHead("StatusBase Status Page");
       </h3>
     </div>
 
-    <Collapse v-for="group in config.groups" :name="group.slug" :sites="group.sites"/>
+    <Collapse v-for="group in config.groups" :name="group.name" :slug="group.slug" :sites="group.sites"/>
   </div>
 </template>

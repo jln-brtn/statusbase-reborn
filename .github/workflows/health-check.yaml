@@ -12,7 +12,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run check script
-        run: ./build/check
+        run: ./build/main
         working-directory: ci
 
       - name: Configure Git

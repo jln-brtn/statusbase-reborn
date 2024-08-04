@@ -3,10 +3,14 @@
 import Banner from "assets/banner.png"
 import { useWindowSize } from "@vueuse/core"
 
+const runtimeConfig = useRuntimeConfig();
 const gridCount = useGridCount()
 const { width: windowWidth } = useWindowSize()
 
-watch(windowWidth, (n) => (gridCount.value = n > 768 ? 45 : n > 500 ? 30 : 20))
+watchEffect(() => {
+  const n = windowWidth.value
+  gridCount.value = n > 768 ? 45 : n > 500 ? 30 : 20
+})
 </script>
 <template>
   <div class="w-full flex flex-col items-center relative">
@@ -17,7 +21,7 @@ watch(windowWidth, (n) => (gridCount.value = n > 768 ? 45 : n > 500 ? 30 : 20))
           to="/"
           class="text-white text-3xl md:text-4xl font-semibold inline-flex items-center text-shadow-md shadow-green-500"
         >
-          <Logo class="mr-4"></Logo> StatusBase Nuxt
+          <Logo class="mr-4"></Logo> {{ runtimeConfig.public.NAME }}
         </NuxtLink>
       </div>
       <NuxtPage />

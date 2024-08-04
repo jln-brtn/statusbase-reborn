@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { formatUptime } from "~~/utils/function";
 import CarbonChevronUp from "~icons/carbon/chevron-up";
 import CarbonChevronDown from "~icons/carbon/chevron-down";
 
 const props = defineProps({
   name: String,
+  slug: String,
   sites: Array<any>,
 });
 // status = ref();
@@ -17,7 +17,7 @@ const toggleCards = () => {
 
 <template>
   <div class="my-8 md:my-10 w-full">
-    <Card :name="name" :slug="name"/>
+    <Card :name="name" :slug="slug"/>
 
     <div class="flex items-center justify-center">
       <button class="btn" @click="toggleCards">
