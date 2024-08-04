@@ -1,4 +1,4 @@
-name: [DEMO] Scheduled Health Check
+name: DEMO Scheduled Health Check
 on:
   schedule:
     - cron: "*/5 * * * *"
