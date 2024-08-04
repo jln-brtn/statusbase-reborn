@@ -39,8 +39,10 @@ jobs:
       - name: Add executable to Git
         run: git add ./ci/build/*
 
-      - name: Commit executable
-        run: git commit -m "Add build executable"
+      - name: Commit logs
+        id: commit
+        run: |
+          git diff-index --quiet HEAD || git commit -m "Add build executable"
 
       - name: Push changes
         uses: ad-m/github-push-action@master
