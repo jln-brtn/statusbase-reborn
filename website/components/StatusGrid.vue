@@ -5,6 +5,7 @@ Settings.defaultZone = "utc";
 import Papa from "papaparse";
 import { ref, watch, computed } from "vue";
 
+const runtimeConfig = useRuntimeConfig();
 const gridCount = useGridCount();
 const props = defineProps({
   slug: String,
@@ -24,7 +25,7 @@ const computedData = ref([]);
 const fetchComputedData = async () => {
   try {
     const response: any = await $fetch(
-        `https://raw.githubusercontent.com/jln-brtn/statusbase-reborn/master/ci/logs/${props.slug}.csv`
+        `https://raw.githubusercontent.com/${runtimeConfig.public.OWNER}/${runtimeConfig.public.REPO}/${runtimeConfig.public.BRANCH}/ci/logs/${props.slug}.csv`
     );
 
     const records = Papa.parse(response, {
@@ -85,7 +86,7 @@ watch(() => props.slug, fetchComputedData, { immediate: true });
 const overallUptime = computed(() => {
   let dateWithUptimeData = computedData.value.filter((i) => i.uptime >= 0)
   return (
-      dateWithUptimeData.reduce((a, v) => a + v.uptime, 0) / dateWithUptimeData.reduce((a, v) => a + 1, 0)
+      dateWithUptimeData.reduce((a, v) => a + v.uptime, 0) / dateWithUptimeData.reduce((a) => a + 1, 0)
   )
 });
 

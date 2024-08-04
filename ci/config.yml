@@ -1,5 +1,6 @@
 owner: crackito-io # Your GitHub organization or username, where this repository lives
 repo: status # The name of this repository
+branch: demo # The name of the branch
 
 status-website:
   cname: status.crackito.io

@@ -14,6 +14,7 @@ import (
 type Config struct {
 	Owner         string `yaml:"owner"`
 	Repo          string `yaml:"repo"`
+	Branch        string `yaml:"branch"`
 	StatusWebsite struct {
 		CName       string `yaml:"cname"`
 		LogoURL     string `yaml:"logoUrl"`

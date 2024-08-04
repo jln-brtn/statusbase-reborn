@@ -12,6 +12,7 @@ export default defineNuxtConfig({
         public: {
             OWNER: process.env.OWNER,
             REPO: process.env.REPO,
+            BRANCH: process.env.BRANCH,
             CNAME: process.env.CNAME,
             LOGO_URL: process.env.LOGO_URL,
             NAME: process.env.NAME,
