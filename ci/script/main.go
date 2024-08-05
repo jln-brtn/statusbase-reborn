@@ -207,9 +207,10 @@ func filesGeneration() {
 
 	// Create the .env file content
 	envContent := fmt.Sprintf(
-		"OWNER=%s\nREPO=%s\nCNAME=%s\nLOGO_URL=%s\nNAME=%s\nDESCRIPTION=%s\n",
+		"OWNER=%s\nREPO=%s\nBRANCH=%s\nCNAME=%s\nLOGO_URL=%s\nNAME=%s\nDESCRIPTION=%s\n",
 		config.Owner,
 		config.Repo,
+		config.Branch,
 		config.StatusWebsite.CName,
 		config.StatusWebsite.LogoURL,
 		config.StatusWebsite.Name,
