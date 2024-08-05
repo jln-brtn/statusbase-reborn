@@ -119,12 +119,12 @@ func writeStatus(path string, now time.Time, status string) {
 	entries := readLogEntries(path)
 	entries = removeOldDates(entries)
 
-	if now.Day() != entries[len(entries)-1].Time.Day() { //if this is the first run of the day
+	if len(entries) == 0 { //if this is the first run of the day
 		yesterday := now.AddDate(0, 0, -1)
 		yesterdayAt2359 := time.Date(yesterday.Year(), yesterday.Month(), yesterday.Day(), 23, 59, 0, 0, time.UTC)
 		entries = append(entries, StatusEntry{yesterdayAt2359, status})
 		entries = append(entries, StatusEntry{now, status})
-	} else if len(entries) == 0 { //if there is no record before
+	} else if now.Day() != entries[len(entries)-1].Time.Day() { //if there is no record before
 		entries = append(entries, StatusEntry{now, status})
 	} else if entries[len(entries)-1].Status != status { //if the previous record is different from
 		entries = append(entries, StatusEntry{now, status})
