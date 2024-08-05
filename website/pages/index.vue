@@ -5,7 +5,7 @@ const runtimeConfig = useRuntimeConfig()
 
 const {data: config} = await useAsyncData("config", async () => {
   const response: any = await $fetch(
-      `https://raw.githubusercontent.com/${runtimeConfig.public.OWNER}/${runtimeConfig.public.REPO}/master/ci/config.yml`
+      `https://raw.githubusercontent.com/${runtimeConfig.public.OWNER}/${runtimeConfig.public.REPO}/${runtimeConfig.public.BRANCH}/ci/config.yml`
   );
   return YAML.parse(response);
 });
