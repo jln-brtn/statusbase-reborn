@@ -1,6 +1,6 @@
 owner: jln-brtn # Your GitHub organization or username, where this repository lives
 repo: statusbase-reborn # The name of this repository
-branch: demo # The name of the branch
+branch: master # The name of the branch
 
 status-website:
   cname: demo.statusbase-reborn.julien-breton.fr
