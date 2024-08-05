@@ -1,23 +1,29 @@
-owner: crackito-io # Your GitHub organization or username, where this repository lives
-repo: status # The name of this repository
+owner: jln-brtn # Your GitHub organization or username, where this repository lives
+repo: statusbase-reborn # The name of this repository
 branch: demo # The name of the branch
 
 status-website:
-  cname: status.crackito.io
+  cname: demo.statusbase-reborn.julien-breton.fr
   logoUrl: https://raw.githubusercontent.com/upptime/upptime.js.org/master/static/img/icon.svg
-  name: Crackito
-  description: Monitoring dashboard for the Crackito website
+  name: Statusbase Reborn Demo
+  description: Demo of the Statusbase Reborn project
 
 groups:
   - name: "French Zone"
     slug: "fr-zone"
     sites:
-      - name: Crackito
-        desc: https://fr.crackito.io/
-        slug: fr-crackito
-      - name: Git
-        desc: https://fr.crackito.io/git
-        slug: fr-git
-      - name: Woodpecker
-        desc: https://fr.crackito.io/ci
-        slug: fr-woodpecker
+      - name: Google
+        desc: https://www.google.fr/
+        slug: fr-google
+      - name: Hugging Face
+        desc: https://huggingface.co/
+        slug: fr-hugging-face
+      - name: MistralAI
+        desc: https://mistral.ai/fr/
+        slug: fr-mistral-ai
+  - name: "UK Zone"
+    slug: "uk-zone"
+    sites:
+      - name: Failure Website
+        desc: http://cesitenexistepas.com/
+        slug: uk-failure-website
