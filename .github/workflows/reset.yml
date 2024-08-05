@@ -1,0 +1,42 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-executable:
+    if: contains(github.event.head_commit.message, '!reset') || contains(github.event.head_commit.message, 'Initial commit')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Clean build directory
+        run: rm -rf ./build/*
+        working-directory: ci
+
+      - name: Clean logs directory
+        run: rm -rf ./logs/*
+        working-directory: ci
+
+      - name: Configure Git
+        run: |
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@github.com'
+
+      - name: Add removed files to Git
+        run: git add .
+
+      - name: Commit
+        id: commit
+        run: |
+          git diff-index --quiet HEAD || git commit -m "Reset the repository"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.TOKEN }}
+          branch: ${{ github.ref }}
