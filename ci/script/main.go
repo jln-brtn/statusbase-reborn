@@ -47,7 +47,7 @@ const (
 
 func main() {
 	check()
-	envGen()
+	filesGeneration()
 }
 
 func check() {
@@ -189,7 +189,7 @@ func writeLogEntries(path string, entries []StatusEntry) {
 	writer.Flush()
 }
 
-func envGen() {
+func filesGeneration() {
 	// Read the YAML file
 	data, err := os.ReadFile("config.yml")
 	if err != nil {
@@ -222,6 +222,19 @@ func envGen() {
 		fmt.Println("Error writing .env file:", err)
 		return
 	}
-
 	fmt.Println(".env file generated successfully")
+
+	// Create the CNAME file content
+	envContent = fmt.Sprintf(
+		"%s",
+		config.StatusWebsite.CName,
+	)
+
+	// Write to the CNAME file
+	err = os.WriteFile("CNAME", []byte(envContent), 0644)
+	if err != nil {
+		fmt.Println("Error writing CNAME file:", err)
+		return
+	}
+	fmt.Println("CNAME file generated successfully")
 }

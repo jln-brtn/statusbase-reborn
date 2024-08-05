@@ -70,6 +70,9 @@ jobs:
         run: npm run generate
         working-directory: website
 
+      - name: Move CNAME file
+        run: mv ./ci/CNAME ./website/.output/public/CNAME
+
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4
         with:
